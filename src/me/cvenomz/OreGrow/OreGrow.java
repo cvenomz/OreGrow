@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import org.bukkit.CoalType;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.material.Coal;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class OreGrow extends JavaPlugin{
@@ -27,6 +29,7 @@ public class OreGrow extends JavaPlugin{
 	Properties furnaces = new Properties();
 	PlayerListener playerListener;
 	Logger log = Logger.getLogger("Minecraft");
+	double version = 0.2;
 	
 	@Override
 	public void onDisable() {
@@ -67,14 +70,21 @@ public class OreGrow extends JavaPlugin{
 		
 		FurnaceRecipe r = new FurnaceRecipe(new ItemStack(Material.COBBLESTONE, 1), Material.COAL_ORE);
 		getServer().addRecipe(r);
-		ShapelessRecipe s = new ShapelessRecipe(new ItemStack(Material.COAL_ORE, 1));
-		s.addIngredient(9, Material.COAL);
-		getServer().addRecipe(s);
+		ShapelessRecipe s1 = new ShapelessRecipe(new ItemStack(Material.COAL_ORE, 1));
+		s1.addIngredient(9, Material.COAL);
+		getServer().addRecipe(s1);
+		ShapelessRecipe s2 = new ShapelessRecipe(new ItemStack(Material.COAL_ORE, 1));
+		Coal coal = new Coal(CoalType.CHARCOAL);
+		s2.addIngredient(9, coal);
+		getServer().addRecipe(s2);
+		
 		
 		
 		OreGrowThread oreGrowThread = new OreGrowThread(this);
 		int taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, oreGrowThread, 1, 1);
 		//log.info(""+taskID);
+		
+		log.info("[OreGrow] version " + version + " initialized");
 		
 	}
 	
