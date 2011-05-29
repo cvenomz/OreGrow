@@ -29,7 +29,7 @@ public class OreGrow extends JavaPlugin{
 	Properties furnaces = new Properties();
 	PlayerListener playerListener;
 	Logger log = Logger.getLogger("Minecraft");
-	double version = 0.2;
+	double version = 0.3;
 	
 	@Override
 	public void onDisable() {
@@ -71,11 +71,11 @@ public class OreGrow extends JavaPlugin{
 		FurnaceRecipe r = new FurnaceRecipe(new ItemStack(Material.COBBLESTONE, 1), Material.COAL_ORE);
 		getServer().addRecipe(r);
 		ShapelessRecipe s1 = new ShapelessRecipe(new ItemStack(Material.COAL_ORE, 1));
-		s1.addIngredient(9, Material.COAL);
+		s1.addIngredient(4, Material.COAL);
 		getServer().addRecipe(s1);
 		ShapelessRecipe s2 = new ShapelessRecipe(new ItemStack(Material.COAL_ORE, 1));
 		Coal coal = new Coal(CoalType.CHARCOAL);
-		s2.addIngredient(9, coal);
+		s2.addIngredient(4, coal);
 		getServer().addRecipe(s2);
 		
 		
