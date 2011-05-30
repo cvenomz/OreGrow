@@ -29,7 +29,7 @@ public class OreGrow extends JavaPlugin{
 	Properties furnaces = new Properties();
 	PlayerListener playerListener;
 	Logger log = Logger.getLogger("Minecraft");
-	double version = 0.3;
+	double version = 0.4;
 	
 	@Override
 	public void onDisable() {
@@ -173,6 +173,7 @@ public class OreGrow extends JavaPlugin{
 	public void setFurnaceValue(String str, Integer value)
 	{
 		furnaces.setProperty(str, value.toString());
+		writeFurnaces();
 	}
 
 }

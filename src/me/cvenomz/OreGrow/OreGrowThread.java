@@ -1,5 +1,6 @@
 package me.cvenomz.OreGrow;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -37,7 +38,8 @@ public class OreGrowThread implements Runnable{
 				{
 					grow(block, cur);
 				}
-				oreGrow.setFurnaceValue(oreGrow.blockToString(block), cur);
+				if (cur != prev)
+					oreGrow.setFurnaceValue(oreGrow.blockToString(block), cur);
 			}
 		}
 	}
@@ -103,7 +105,11 @@ public class OreGrowThread implements Runnable{
 		rx = root.getX();
 		ry = root.getY();
 		rz = root.getZ();
-		for (int i=0; i<3; i++)
+		boolean completed = false;
+		Block tmp = root,tmp2;
+		int height = 1;
+		List<Block> availible;
+		/*for (int i=0; i<3; i++)
 		{
 			x = (int) (((Math.random() * 2.0) + 1.0) * (Math.pow(-1,((int)(Math.random()*10)))));
 			z = (int) (((Math.random() * 2.0) + 1.0) * (Math.pow(-1,((int)(Math.random()*10)))));
@@ -113,7 +119,71 @@ public class OreGrowThread implements Runnable{
 				world.getBlockAt(rx+x, ry+i+1, rz+z).setType(targetMaterial);
 				i=3; //break from for loop
 			}
+		}*/
+		while (!completed && height < 4)
+		{
+			tmp = tmp.getFace(BlockFace.UP);
+			height++;
+			availible = getOpenNeighbors(tmp, targetMaterial);
+			if (availible.size() > 0)
+			{
+				tmp2 = availible.get((int)(Math.random() * availible.size()));
+				if (tmp.getType() == Material.AIR)
+					tmp.setType(Material.GLOWSTONE);
+				build(tmp2, targetMaterial);
+			}
 		}
+		
+	}
+	
+	private List<Block> getAirNeighbors(Block block) //gets neighboring (horizontal) blocks that are not occupied
+	{
+		LinkedList<Block> list = new LinkedList<Block>();
+		if (block.getFace(BlockFace.SOUTH).getType() == Material.AIR)
+			list.add(block.getFace(BlockFace.SOUTH));
+		if (block.getFace(BlockFace.WEST).getType() == Material.AIR)
+			list.add(block.getFace(BlockFace.WEST));
+		if (block.getFace(BlockFace.NORTH).getType() == Material.AIR)
+			list.add(block.getFace(BlockFace.NORTH));
+		if (block.getFace(BlockFace.EAST).getType() == Material.AIR)
+			list.add(block.getFace(BlockFace.EAST));
+		
+		return list;
+	}
+	
+	private List<Block> getOpenNeighbors(Block block, Material target) //returns neighboring blocks that are not fully surrounded (horizontally)
+	{
+		LinkedList<Block> list = new LinkedList<Block>();
+		Block tmp;
+		
+		tmp = block.getFace(BlockFace.SOUTH);
+		if ((tmp.getType() == target || tmp.getType() == Material.AIR) && getAirNeighbors(tmp).size() != 0)
+			list.add(tmp);
+		tmp = block.getFace(BlockFace.WEST);
+		if ((tmp.getType() == target || tmp.getType() == Material.AIR) && getAirNeighbors(tmp).size() != 0)
+			list.add(tmp);
+		tmp = block.getFace(BlockFace.NORTH);
+		if ((tmp.getType() == target || tmp.getType() == Material.AIR) && getAirNeighbors(tmp).size() != 0)
+			list.add(tmp);
+		tmp = block.getFace(BlockFace.EAST);
+		if ((tmp.getType() == target || tmp.getType() == Material.AIR) && getAirNeighbors(tmp).size() != 0)
+			list.add(tmp);
+		
+		return list;
+	}
+	
+	private void build(Block block, Material target)
+	{
+		if (block.getType() != target)
+		{
+			block.setType(target);
+		}
+		else
+		{
+			List<Block> list = getAirNeighbors(block);
+			list.get((int)(Math.random() * list.size())).setType(target);
+		}
+		
 	}
 
 }

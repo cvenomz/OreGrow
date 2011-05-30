@@ -5,7 +5,7 @@ Place furnace
 Place single redstone wire adjacent to furnace
 Place SOLID BLOCK of iron, gold, or diamond adjacent to the redstone with, such that all three (furnace, restone, solid block) are all in a DIRECT LINE.
 These three blocks must be Co-Linear.
-Obtain Coal or charcoal.  Fill crafting grid with coal/charcoal and craft Coal ore blocks.
+To obtain Coal or charcoal, place 4 coal/charcoal in crafting grid and craft Coal ore blocks.
 Smelt coal ore blocks in Furnace apparatus created in previous steps to grow ore.
 
 Iron ore requires the smelting of 2 coal ore
@@ -17,8 +17,3 @@ smelt 7 coal ore, then remove the 7 newly-created cobblestone before the 8th
 is smelted, diamond ore will not be grown.  Growing occurs when a multiple of
 the required number has just been achieved in the output of the furnace.
 This also applies to Gold and Iron as well.
-
-And another note: The growing algoriths incorperates randomness.  It randomly selects a nearby location one level above the solid block.
-If it cant be built there, then it selects another random location and tries the second level above.  If the ore cannot be placed after the third level,
-then it is not grown at all.  Thus it is not always entirely garunteed that
-a 'grow event' will take place every single time.
