@@ -131,6 +131,7 @@ public class OreGrowThread implements Runnable{
 				if (tmp.getType() == Material.AIR)
 					tmp.setType(Material.GLOWSTONE);
 				build(tmp2, targetMaterial);
+				completed = true;
 			}
 		}
 		
