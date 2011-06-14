@@ -13,6 +13,9 @@ import org.bukkit.inventory.ItemStack;
 public class OreGrowThread implements Runnable{
 
 	private OreGrow oreGrow;
+	private int ironInterval = 1;
+	private int goldInterval = 2;
+	private int diamondInterval = 4;
 	
 	public OreGrowThread(OreGrow og)
 	{
@@ -68,21 +71,21 @@ public class OreGrowThread implements Runnable{
 			return;
 		if (root.getType() == Material.IRON_BLOCK)
 		{
-			if (amount % 2 == 0)
+			if (amount % ironInterval == 0)
 			{
 				addOre(root);
 			}
 		}
 		if (root.getType() == Material.GOLD_BLOCK)
 		{
-			if (amount % 4 == 0)
+			if (amount % goldInterval == 0)
 			{
 				addOre(root);
 			}
 		}
 		if (root.getType() == Material.DIAMOND_BLOCK)
 		{
-			if (amount % 8 == 0)
+			if (amount % diamondInterval == 0)
 			{
 				addOre(root);
 			}

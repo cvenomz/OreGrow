@@ -29,7 +29,7 @@ public class OreGrow extends JavaPlugin{
 	Properties furnaces = new Properties();
 	PlayerListener playerListener;
 	Logger log = Logger.getLogger("Minecraft");
-	String version = "0.4.1";
+	String version = "0.4.2";
 	
 	@Override
 	public void onDisable() {
