@@ -2,9 +2,9 @@ package me.cvenomz.OreGrow;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Furnace;
@@ -12,16 +12,18 @@ import org.bukkit.inventory.ItemStack;
 
 public class OreGrowThread implements Runnable{
 
-	private OreGrow oreGrow;
+	//private OreGrow plugin;
+	private OreGrowHandler handler;
 	private int ironInterval = 1;
 	private int goldInterval = 2;
 	private int diamondInterval = 4;
 	
-	public OreGrowThread(OreGrow og)
+	public OreGrowThread(OreGrow og, OreGrowHandler ogh)
 	{
-		oreGrow = og;
+		//plugin = og;
+	    handler = ogh;
 	}
-	@Override
+	/*@Override
 	public void run() {
 		List<Block> list = oreGrow.getFurnaces();
 		//CraftFurnace f;
@@ -45,6 +47,37 @@ public class OreGrowThread implements Runnable{
 					oreGrow.setFurnaceValue(oreGrow.blockToString(block), cur);
 			}
 		}
+	}*/
+	@Override
+	public void run()
+	{
+	    Map<Block,Integer> dbFurnaces = handler.getFurnaces();
+	    Furnace f;
+	    int dbBitch, fBitch;
+	    for (Block b : dbFurnaces.keySet())
+	    {
+	        dbBitch = dbFurnaces.get(b);
+	        f = (Furnace)b.getState();
+	        ItemStack item = f.getInventory().getItem(2);
+	        if (item.getType() == Material.COBBLESTONE)
+	        {
+	            fBitch = item.getAmount();
+	        }
+	        else
+	        {
+	            fBitch = 0;
+	        }
+	        
+	        if (dbBitch < fBitch)
+	        {
+	            grow(b, fBitch);
+	            handler.setDatabaseBitch(b, fBitch);
+	        }
+	        else if (dbBitch > fBitch)
+	        {
+	            handler.setDatabaseBitch(b, fBitch);
+	        }
+	    }
 	}
 	
 	private void grow(Block block, int amount)
@@ -102,12 +135,12 @@ public class OreGrowThread implements Runnable{
 		case DIAMOND_BLOCK : targetMaterial = Material.DIAMOND_ORE;break;
 		}
 		
-		int x,z;
-		int rx,ry,rz;
-		World world = root.getWorld();
-		rx = root.getX();
-		ry = root.getY();
-		rz = root.getZ();
+		//int x,z;
+		//int rx,ry,rz;
+		//World world = root.getWorld();
+		//rx = root.getX();
+		//ry = root.getY();
+		//rz = root.getZ();
 		boolean completed = false;
 		Block tmp = root,tmp2;
 		int height = 1;

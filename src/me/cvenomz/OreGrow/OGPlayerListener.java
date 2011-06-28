@@ -7,11 +7,11 @@ import org.bukkit.event.player.PlayerListener;
 
 public class OGPlayerListener extends PlayerListener {
 	
-	private OreGrow oreGrow;
+	private OreGrowHandler handler;
 	
-	public OGPlayerListener(OreGrow og)
+	public OGPlayerListener(OreGrowHandler ogh)
 	{
-		oreGrow = og;
+		handler = ogh;
 	}
 	
 	@Override
@@ -20,7 +20,7 @@ public class OGPlayerListener extends PlayerListener {
 		Block block = e.getClickedBlock();
 		if (block != null && (block.getType() == Material.FURNACE || block.getType() == Material.BURNING_FURNACE))
 		{
-			oreGrow.addFurnace(block);
+			handler.addFurnace(block);
 		}
 	}
 
