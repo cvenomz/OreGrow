@@ -32,7 +32,7 @@ public class OreGrowHandler {
         
     }
     
-    private int getDatabaseBitch(Block b)
+    public int getDatabaseBitch(Block b)
     {
         int ret = 0;
         try {

@@ -12,6 +12,7 @@ import org.bukkit.CoalType;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
+import org.bukkit.event.inventory.InventoryListener;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
@@ -27,11 +28,12 @@ public class OreGrow extends JavaPlugin{
 	Properties config;
 	//Properties furnaces = new Properties();
 	PlayerListener playerListener;
+	InventoryListener inventoryListener;
 	OreGrowHandler oreGrowHandler;
 	MysqlManager mysqlManager;
 	String host, databaseName, username, password;
 	Logger log = Logger.getLogger("Minecraft");
-	String version = "0.5";
+	String version = "0.6";
 	
 	@Override
 	public void onDisable() {
@@ -89,6 +91,8 @@ public class OreGrow extends JavaPlugin{
 		
 		playerListener = new OGPlayerListener(oreGrowHandler);
 		getServer().getPluginManager().registerEvent(Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
+		inventoryListener = new OGInventoryListener(oreGrowHandler);
+		getServer().getPluginManager().registerEvent(Type.FURNACE_SMELT, inventoryListener, Event.Priority.Normal, this);
 		
 		FurnaceRecipe r = new FurnaceRecipe(new ItemStack(Material.COBBLESTONE, 1), Material.COAL_ORE);
 		getServer().addRecipe(r);
@@ -102,8 +106,8 @@ public class OreGrow extends JavaPlugin{
 		
 		
 		
-		OreGrowThread oreGrowThread = new OreGrowThread(this, oreGrowHandler);
-		getServer().getScheduler().scheduleSyncRepeatingTask(this, oreGrowThread, 1, 1);
+		//OreGrowThread oreGrowThread = new OreGrowThread(this, oreGrowHandler);
+		//getServer().getScheduler().scheduleAsyncRepeatingTask(this, oreGrowThread, 1, 10);
 		//log.info(""+taskID);
 		
 		log.info("[OreGrow] version " + version + " initialized");
