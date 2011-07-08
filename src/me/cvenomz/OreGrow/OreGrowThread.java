@@ -1,33 +1,28 @@
 package me.cvenomz.OreGrow;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Furnace;
-import org.bukkit.inventory.ItemStack;
+import java.util.logging.Logger;
 
 public class OreGrowThread implements Runnable{
 
-	//private OreGrow plugin;
-	private OreGrowHandler handler;
-	private int ironInterval = 1;
-	private int goldInterval = 2;
-	private int diamondInterval = 4;
+	private MysqlManager database;
+	private Logger log;
 	
-	public OreGrowThread(OreGrow og, OreGrowHandler ogh)
+	public OreGrowThread(MysqlManager mm)
 	{
-		//plugin = og;
-	    handler = ogh;
+	    database = mm;
+	    log = Logger.getLogger("Minecraft");
 	}
 
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        
+        try {
+            database.resetConnection();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            log.severe("[OreGrow] Could not reset database connection");
+            e.printStackTrace();
+        }
     }
 	
 	

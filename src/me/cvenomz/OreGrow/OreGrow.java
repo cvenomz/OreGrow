@@ -33,7 +33,7 @@ public class OreGrow extends JavaPlugin{
 	MysqlManager mysqlManager;
 	String host, databaseName, username, password;
 	Logger log = Logger.getLogger("Minecraft");
-	String version = "0.6";
+	String version = "0.7";
 	
 	@Override
 	public void onDisable() {
@@ -57,7 +57,6 @@ public class OreGrow extends JavaPlugin{
 			mainDirectory.mkdir();
 		
 		try {
-			//furnacesFile = new File(mainDirectory.getCanonicalPath() + File.separator + "furnaces.properties");
 		    configFile = new File(mainDirectory.getCanonicalPath() + File.separator + "OreGrow.properties");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -106,8 +105,8 @@ public class OreGrow extends JavaPlugin{
 		
 		
 		
-		//OreGrowThread oreGrowThread = new OreGrowThread(this, oreGrowHandler);
-		//getServer().getScheduler().scheduleAsyncRepeatingTask(this, oreGrowThread, 1, 10);
+		OreGrowThread oreGrowThread = new OreGrowThread(mysqlManager);
+		getServer().getScheduler().scheduleAsyncRepeatingTask(this, oreGrowThread, 72000, 72000);
 		//log.info(""+taskID);
 		
 		log.info("[OreGrow] version " + version + " initialized");

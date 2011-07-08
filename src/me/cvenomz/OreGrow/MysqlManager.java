@@ -28,13 +28,13 @@ public class MysqlManager {
         this.tableName = "OreGrow";
     }
     
-    public void initialize() throws Exception
+    public synchronized void initialize() throws Exception
     {
         establishConnection();
         CheckTable();
     }
     
-    private void establishConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException
+    private synchronized void establishConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException
     {
         url = "jdbc:mysql://"+host+"/"+databaseName;
         Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -42,13 +42,19 @@ public class MysqlManager {
         //pluginRef.debugMessage("Connection attempt to database -- done");
     }
     
-    public void closeConnection() throws SQLException
+    public synchronized void closeConnection() throws SQLException
     {
         conn.close();
         //pluginRef.debugMessage("Connection close attempt -- done");
     }
     
-    private boolean tableExists()throws Exception
+    public synchronized void resetConnection() throws Exception
+    {
+        closeConnection();
+        establishConnection();
+    }
+    
+    private synchronized boolean tableExists()throws Exception
     {
         Statement s = conn.createStatement();
         s.executeQuery("SHOW TABLES");
@@ -62,14 +68,14 @@ public class MysqlManager {
         return ret;
     }
     
-    private void CheckTable()throws Exception
+    private synchronized void CheckTable()throws Exception
     {
         Statement s = conn.createStatement();
         if (!tableExists())
             s.executeUpdate("CREATE TABLE " + tableName + " (id INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT, PRIMARY KEY (id), world varchar(50), x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, bitch INT NOT NULL )");
     }
     
-    public int getDatabaseBitch(String world, int x, int y, int z) throws SQLException
+    public synchronized int getDatabaseBitch(String world, int x, int y, int z) throws SQLException
     {
         Statement s = conn.createStatement();
         s.executeQuery("SELECT bitch FROM " + tableName + " WHERE world='"+world + "' AND x="+x + " AND y="+y + " AND z="+z);
@@ -82,25 +88,25 @@ public class MysqlManager {
         return bitch;
     }
     
-    public void addFurnace(Block b) throws SQLException
+    public synchronized void addFurnace(Block b) throws SQLException
     {
         Statement s = conn.createStatement();
         s.executeUpdate("INSERT INTO " + tableName + " (world, x, y, z, bitch) VALUES ('"+b.getWorld().getName()+"',"+b.getX()+","+b.getY()+","+b.getZ()+","+0+")");
     }
     
-    public void setDatabaseBitch(Block b, int value) throws SQLException
+    public synchronized void setDatabaseBitch(Block b, int value) throws SQLException
     {
         Statement s = conn.createStatement();
         s.executeUpdate("UPDATE " + tableName + " SET bitch="+value + " WHERE world='"+b.getWorld().getName() + "' AND x="+b.getX() + " AND y="+b.getY() + " AND z="+b.getZ());
     }
     
-    public void removeFurnace(Block b) throws SQLException
+    public synchronized void removeFurnace(Block b) throws SQLException
     {
         Statement s = conn.createStatement();
         s.executeUpdate("DELETE FROM " + tableName + " WHERE world='"+b.getWorld().getName() + "' AND x="+b.getX() + " AND y="+b.getY() + " AND z="+b.getZ());
     }
     
-    public ResultSet getFurnaces() throws SQLException
+    public synchronized ResultSet getFurnaces() throws SQLException
     {
         Statement s = conn.createStatement();
         s.executeQuery("SELECT * FROM " + tableName);
